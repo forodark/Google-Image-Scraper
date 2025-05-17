@@ -33,16 +33,24 @@ if __name__ == "__main__":
     webdriver_path = os.path.normpath(os.path.join(os.getcwd(), 'webdriver', webdriver_executable()))
     image_path = os.path.normpath(os.path.join(os.getcwd(), 'photos'))
 
-    #Add new search key into array ["cat","t-shirt","apple","orange","pear","fish"]
-    search_keys = list(set(["car","stars"]))
+    #Read search terms from file
+    search_terms_path = os.path.normpath(os.path.join(os.getcwd(), 'search_terms.txt'))
+    with open(search_terms_path, 'r') as f:
+        raw_search_keys = [line.strip() for line in f.readlines() if line.strip()]
+    
+    #Add template to each search term
+    # search_template = "on plate"
+    # search_keys = list(set([f"{term} {search_template}" for term in raw_search_keys]))
+
+    search_keys = raw_search_keys
 
     #Parameters
-    number_of_images = 10                # Desired number of images
-    headless = False                    # True = No Chrome GUI
+    number_of_images = 250                # Desired number of images
+    headless = True                 # True = No Chrome GUI
     min_resolution = (0, 0)             # Minimum desired image resolution
     max_resolution = (9999, 9999)       # Maximum desired image resolution
-    max_missed = 10                     # Max number of failed images before exit
-    number_of_workers = 1               # Number of "workers" used
+    max_missed = 20                     # Max number of failed images before exit
+    number_of_workers = 4               # Number of "workers" used
     keep_filenames = False              # Keep original URL image filenames
 
     #Run each search_key in a separate thread
